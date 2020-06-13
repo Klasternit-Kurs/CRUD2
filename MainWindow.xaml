@@ -9,7 +9,10 @@
 	<DockPanel>
 		<StackPanel DockPanel.Dock="Right" VerticalAlignment="Center">
 			<Button Content="Dodaj" FontSize="32" Click="Dodaj"/>
+			<Button Content="Obrisi" FontSize="32" Click="Obrisi"/>
+			<Button Content="Izmena" FontSize="32" Click="Izmena"/>
 		</StackPanel>
+		<TextBox Text="{Binding Pretraga, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Top"/>
 		<DataGrid Name="dg" IsReadOnly="True" ColumnWidth="*" FontSize="24" />
 	</DockPanel>
 </Window>

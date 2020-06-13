@@ -21,12 +21,29 @@ namespace CRUD2
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		ObservableCollection<Artikal> listaArt = new ObservableCollection<Artikal>();
-		
+		//ObservableCollection<Artikal> listaArt = new ObservableCollection<Artikal>();
+		BazaXYZ db = new BazaXYZ();
+
+		private string _pretraga;
+		public string Pretraga 
+		{ 
+			get => _pretraga; 
+			set
+			{
+				_pretraga = value;
+				if (string.IsNullOrWhiteSpace(_pretraga))
+					dg.ItemsSource = db.Artikals.ToList();
+				else
+					dg.ItemsSource = db.Artikals.Where(a => a.Naziv.Contains(_pretraga.Trim())).ToList();
+			}
+		}
+
 		public MainWindow()
 		{
 			InitializeComponent();
-			dg.ItemsSource = listaArt;
+			DataContext = this;
+			
+			dg.ItemsSource = db.Artikals.ToList();
 		}
 
 		private void Dodaj(object sender, RoutedEventArgs e)
@@ -35,7 +52,33 @@ namespace CRUD2
 			ed.Owner = this;
 
 			if (ed.ShowDialog().Value) //bool?    bool
-				listaArt.Add(ed.DataContext as Artikal);
+			{
+				db.Artikals.Add(ed.DataContext as Artikal);
+				dg.ItemsSource = db.Artikals.ToList();
+				db.SaveChanges();
+			}
+		}
+
+		private void Obrisi(object zklj, RoutedEventArgs kasdf)
+		{
+			if (dg.SelectedItem != null)
+			{
+				db.Artikals.Remove(dg.SelectedItem as Artikal);
+				dg.ItemsSource = db.Artikals.ToList();
+				db.SaveChanges();
+			}
+		}
+
+		private void Izmena(object o, RoutedEventArgs rea)
+		{
+			if (dg.SelectedItem != null)
+			{
+				Editor e = new Editor();
+				e.Owner = this;
+				e.DataContext = dg.SelectedItem;
+				e.ShowDialog();
+				db.SaveChanges();
+			}
 		}
 	}
 }

@@ -11,7 +11,7 @@ namespace CRUD2
 	{
 		public int Sifra { get; set; }
 
-		private string _naziv;
+		private string _naziv = "";
 		public string Naziv 
 		{ 
 			get => _naziv; 
@@ -30,6 +30,7 @@ namespace CRUD2
 			{
 				_ucena = value;
 				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Ucena"));
+				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IzlaznaCena"));
 			}
 		}
 
@@ -41,11 +42,22 @@ namespace CRUD2
 			{
 				_marzaProc = value;
 				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("MarzaProc"));
+				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IzlaznaCena"));
 			}
 		}
 
 		public decimal IzlaznaCena { get => Ucena * (1+(decimal)MarzaProc/100);}
 
 		public event PropertyChangedEventHandler PropertyChanged;
+
+		public override string ToString()
+					=> $"{Sifra} - {Naziv}";
+
+		public override bool Equals(object obj)
+					=> obj is Artikal a && this.Sifra == a.Sifra;
+
+		public override int GetHashCode()
+					=> Sifra + Naziv.GetHashCode();
+
 	}
 }

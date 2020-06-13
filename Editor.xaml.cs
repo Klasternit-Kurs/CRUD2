@@ -22,9 +22,9 @@ namespace CRUD2
 
 		public Editor()
 		{
+			InitializeComponent();
 			BindingGroup = new BindingGroup();
 			DataContext = new Artikal();
-			InitializeComponent();
 		}
 
 		private void Otk(object sender, RoutedEventArgs e)
