@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,13 +20,39 @@ namespace CRUD2
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public partial class MainWindow : Window
+	public partial class MainWindow : Window, INotifyPropertyChanged
 	{
 		//ObservableCollection<Artikal> listaArt = new ObservableCollection<Artikal>();
 		BazaXYZ db = new BazaXYZ();
 
+		private int _trenutnaSifra;
+		public int TrenutnaSifra 
+		{ 
+			get => _trenutnaSifra; 
+			set
+            {
+				_trenutnaSifra = value;
+				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TrenutnaSifra"));
+            }
+		}
+		private int _trenutnaKolicina;
+		public int TrenutnaKolicina 
+		{ 
+			get => _trenutnaKolicina; 
+			set
+            {
+				_trenutnaKolicina = value;
+				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TrenutnaKolicina"));
+            }
+		}
+
+		public Racun TrenutniRacun = new Racun();
+
 		private string _pretraga;
-		public string Pretraga 
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public string Pretraga 
 		{ 
 			get => _pretraga; 
 			set
@@ -42,8 +69,10 @@ namespace CRUD2
 		{
 			InitializeComponent();
 			DataContext = this;
-			
 			dg.ItemsSource = db.Artikals.ToList();
+			UnosRac.BindingGroup = new BindingGroup();
+			db.Racuns.ToList();
+			dgRacuni.ItemsSource = db.Racuns.Local;
 		}
 
 		private void Dodaj(object sender, RoutedEventArgs e)
@@ -54,8 +83,8 @@ namespace CRUD2
 			if (ed.ShowDialog().Value) //bool?    bool
 			{
 				db.Artikals.Add(ed.DataContext as Artikal);
-				dg.ItemsSource = db.Artikals.ToList();
 				db.SaveChanges();
+				dg.ItemsSource = db.Artikals.ToList();
 			}
 		}
 
@@ -64,8 +93,8 @@ namespace CRUD2
 			if (dg.SelectedItem != null)
 			{
 				db.Artikals.Remove(dg.SelectedItem as Artikal);
-				dg.ItemsSource = db.Artikals.ToList();
 				db.SaveChanges();
+				dg.ItemsSource = db.Artikals.ToList();
 			}
 		}
 
@@ -80,5 +109,39 @@ namespace CRUD2
 				db.SaveChanges();
 			}
 		}
-	}
+
+		private void UnosStavke(object sender, RoutedEventArgs e)
+		{
+			if (UnosRac.BindingGroup.CommitEdit())
+			{
+				var art = db.Artikals.Find(TrenutnaSifra);
+				if (art != null)
+				{
+					var ak = new ArtKol(art, TrenutnaKolicina);
+					TrenutniRacun.Artikli.Add(ak);
+					dgStavke.ItemsSource = null;
+					dgStavke.ItemsSource = TrenutniRacun.Artikli;
+					TrenutnaKolicina = 0;
+					TrenutnaSifra = 0;
+				} else
+				{
+					MessageBox.Show("Artikal ne postoji!");
+				}
+			}else
+			{
+				MessageBox.Show("Proverite podatke!");
+			}
+
+		}
+
+        private void Izdavanje(object sender, RoutedEventArgs e)
+        {
+			TrenutniRacun.VremeIzdavanja = DateTime.Now;
+			TrenutniRacun.Artikli.ForEach(ak => db.ArtKols.Add(ak));
+			db.Racuns.Add(TrenutniRacun);
+			db.SaveChanges();
+			TrenutniRacun = new Racun();
+			dgStavke.ItemsSource = null;
+        }
+    }
 }

@@ -10,10 +10,14 @@ namespace CRUD2
 	public class BazaXYZ : DbContext
 	{
 		public DbSet<Artikal> Artikals { get; set; }
+		public DbSet<Racun> Racuns { get; set; }
+		public DbSet<ArtKol> ArtKols { get; set; }
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<Artikal>().HasKey(a => a.Sifra);
+			modelBuilder.Entity<Racun>().HasKey(r => r.ID);
+			modelBuilder.Entity<ArtKol>().HasKey(ak => ak.ID);
 		}
 
 	}

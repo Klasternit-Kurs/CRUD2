@@ -6,13 +6,38 @@
         xmlns:local="clr-namespace:CRUD2"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-	<DockPanel>
-		<StackPanel DockPanel.Dock="Right" VerticalAlignment="Center">
-			<Button Content="Dodaj" FontSize="32" Click="Dodaj"/>
-			<Button Content="Obrisi" FontSize="32" Click="Obrisi"/>
-			<Button Content="Izmena" FontSize="32" Click="Izmena"/>
-		</StackPanel>
-		<TextBox Text="{Binding Pretraga, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Top"/>
-		<DataGrid Name="dg" IsReadOnly="True" ColumnWidth="*" FontSize="24" />
-	</DockPanel>
+    <TabControl>
+        <TabItem Header="Racuni" FontSize="18">
+            <StackPanel Orientation="Horizontal">
+                <DockPanel>
+                    <StackPanel Name="UnosRac" DockPanel.Dock="Top" Orientation="Horizontal">
+                        <TextBox Text="{Binding TrenutnaSifra, UpdateSourceTrigger=Explicit}" MinWidth="50"/>
+                        <TextBox Text="{Binding TrenutnaKolicina, UpdateSourceTrigger=Explicit}" MinWidth="50"/>
+                        <Button Content="Unos" FontSize="18" Click="UnosStavke"/>
+                    </StackPanel>
+                    <UniformGrid DockPanel.Dock="Bottom" Columns="2">
+                        <Label Content="Total: "/>
+                        <Label/>
+                        <Button Content="Izdaj" Click="Izdavanje"/>
+                        <Button Content="Ponisti"/>
+                    </UniformGrid>
+                    <DataGrid Name="dgStavke" IsReadOnly="True" ColumnWidth="*" Margin="0,1.333,0,-1"/>
+                </DockPanel>
+                <StackPanel>
+                    <DataGrid Name="dgRacuni" IsReadOnly="True" ColumnWidth="*"/>
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="Artikli" FontSize="18">
+            <DockPanel>
+		        <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center">
+			        <Button Content="Dodaj" FontSize="32" Click="Dodaj"/>
+			        <Button Content="Obrisi" FontSize="32" Click="Obrisi"/>
+			        <Button Content="Izmena" FontSize="32" Click="Izmena"/>
+		        </StackPanel>
+		        <TextBox Text="{Binding Pretraga, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Top"/>
+		        <DataGrid Name="dg" IsReadOnly="True" ColumnWidth="*" FontSize="24" />
+	        </DockPanel>
+        </TabItem>
+    </TabControl>
 </Window>

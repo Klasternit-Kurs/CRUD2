@@ -56,8 +56,8 @@ namespace CRUD2
 		public override bool Equals(object obj)
 					=> obj is Artikal a && this.Sifra == a.Sifra;
 
-		public override int GetHashCode()
-					=> Sifra + Naziv.GetHashCode();
+		//public override int GetHashCode()
+		//			=> Sifra + Naziv.GetHashCode();
 
 	}
 }
