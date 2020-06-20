@@ -20,6 +20,27 @@ namespace CRUD2
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
+	/// 
+
+	/* Za domaci
+	 * 
+	 * Artikli treba da sadrze kolicinu.
+	 * Izdavanje racuna skida sa kolicine.
+	 * Treba mehanizam za dodavanj kolicine.
+	 * Treba mehanizam za dupliranje
+	 * artikala na racunu (tj protiv :D)
+	 * Treba da se sredi onaj nesretni
+	 * datagrid za racune.
+	 * 
+	 * EPIC: Treba nam dinamicna cena za 
+	 * artikle. Umesto fiksne cene
+	 * artikal treba da ima listu. Idealno,
+	 * recnik (datum, cena) no zbog baze, kao
+	 * i artkol, drugu klasu. Te kada god citamo
+	 * cenu artikla, treba nam ulaz, datum za
+	 * koji nas cena intresuje. Ako nema
+	 * ulaza za datum onda smatramo da je zadnja.
+	 */
 	public partial class MainWindow : Window, INotifyPropertyChanged
 	{
 		//ObservableCollection<Artikal> listaArt = new ObservableCollection<Artikal>();
